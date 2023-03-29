@@ -136,12 +136,12 @@ test_asid_pool_make(env_t env)
     int ret = vka_cspace_alloc_path(vka, &path);
     ret = seL4_ARCH_ASIDControl_MakePool(env->asid_ctrl, pool, env->cspace_root, path.capPtr, path.capDepth);
     test_eq(ret, seL4_NoError);
-    ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, env->page_directory);
+    ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, env->page_directory, 0);
     test_eq(ret, seL4_InvalidCapability);
     vka_object_t vspaceroot;
     ret = vka_alloc_vspace_root(vka, &vspaceroot);
     test_assert(!ret);
-    ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, vspaceroot.cptr);
+    ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, vspaceroot.cptr, 0);
     test_eq(ret, seL4_NoError);
     return sel4test_get_result();
 
@@ -206,7 +206,7 @@ test_overassign_asid_pool(env_t env)
     for (i = 0; i < ASID_POOL_SIZE; i++) {
         ret = vka_alloc_vspace_root(vka, &vspaceroot);
         test_assert(!ret);
-        ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, vspaceroot.cptr);
+        ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, vspaceroot.cptr, 0);
         test_eq(ret, seL4_NoError);
         if (ret != seL4_NoError) {
             break;
@@ -215,7 +215,7 @@ test_overassign_asid_pool(env_t env)
     test_eq(i, ASID_POOL_SIZE);
     ret = vka_alloc_vspace_root(vka, &vspaceroot);
     test_assert(!ret);
-    ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, vspaceroot.cptr);
+    ret = seL4_ARCH_ASIDPool_Assign(path.capPtr, vspaceroot.cptr, 0);
     test_eq(ret, seL4_DeleteFirst);
     return sel4test_get_result();
 }
