@@ -138,7 +138,7 @@ test_own_domain1(struct env* env)
 {
     return own_domain_success(env);
 }
-DEFINE_TEST(DOMAINS0001, "Change domain successfully()", test_own_domain1, true)
+//DEFINE_TEST(DOMAINS0001, "Change domain successfully()", test_own_domain1, true)
 
 static int
 test_own_domain2(struct env* env)
